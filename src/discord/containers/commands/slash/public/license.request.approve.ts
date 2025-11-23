@@ -1,15 +1,17 @@
 import { brBuilder, createContainer, createSection, createTextDisplay, Separator } from "@magicyan/discord";
 import { GuildMember, time, TimestampStyles } from "discord.js";
+import { getOuvidoriaDPRoleId } from "../../../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../../../functions/utils/emojis.js";
 
-export function licenseRequestApproveContainer(memberDp: GuildMember, member: GuildMember, motivo: string, tempo: string, observacoes: string) {
+export async function licenseRequestApproveContainer(memberDp: GuildMember, member: GuildMember, motivo: string, tempo: string, observacoes: string) {
     return createContainer({
         components: [
             createSection(
                 brBuilder(
                     `${icon.calendar_check} Licença Aprovada`,
                     `${icon.clock} ${time(new Date(), TimestampStyles.LongDateShortTime)}`,
-                    `${icon.user} ${member.user} (${member.id})`
+                    `${icon.user} ${member.user} (${member.id})`,
+                    `${icon.arrow_right} <@${await getOuvidoriaDPRoleId}>`
                 ),
                 {
                     media: {

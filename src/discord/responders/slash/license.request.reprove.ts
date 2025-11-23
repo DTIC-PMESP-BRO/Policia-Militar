@@ -42,7 +42,7 @@ createResponder({
         await docRef.delete()
         
         await interaction.update({
-            components: [licenseRequestReproveContainer(interaction.member, solicitante, data.motivo, data.tempo, data.observacoes)]
+            components: [await licenseRequestReproveContainer(interaction.member, solicitante, data.motivo, data.tempo, data.observacoes)]
         })
 
         try {

@@ -46,7 +46,7 @@ createResponder({
         })
 
         await interaction.update({
-            components: [licenseRequestApproveContainer(interaction.member, solicitante, data.motivo, data.tempo, data.observacoes)]
+            components: [await licenseRequestApproveContainer(interaction.member, solicitante, data.motivo, data.tempo, data.observacoes)]
         })
 
         try {

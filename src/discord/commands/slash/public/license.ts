@@ -1,8 +1,10 @@
 import { createCommand } from "#base";
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
+import { db } from "../../../../database/firestore.js";
+import { getAusenteRoleId } from "../../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../../functions/utils/emojis.js";
-import { licenseRequestContainer } from "../../../containers/commands/slash/public/license.request.js";
 import { createLicenseRequest } from "../../../../functions/utils/license/createLicenseRequest.js";
+import { licenseRequestContainer } from "../../../containers/commands/slash/public/license.request.js";
 
 createCommand({
     name: "gerenciar",
@@ -79,10 +81,40 @@ createCommand({
 
             await solicitacoesdpChannel.send({
                 flags: ["IsComponentsV2"],
-                components: [licenseRequestContainer(interaction.member, motivo, tempo, observacoes)]
+                components: [await licenseRequestContainer(interaction.member, motivo, tempo, observacoes)]
             });
 
             await createLicenseRequest(interaction.member.id, motivo, tempo, observacoes)
+        } else if (acao === "Retirar licença") {
+            const docRef = db.collection("licenses").doc(interaction.member.id);
+            const doc = await docRef.get();
+
+            if (!doc.exists) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Você não possui uma licença em aberto.`
+                })
+                return;
+            }
+
+            const data = doc.data();
+
+            if (!data) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Os dados do documento estão vazios, contate a equipe de desenvolvimento.`
+                })
+                return;
+            }
+
+            await docRef.delete()
+
+            await interaction.member.roles.remove(await getAusenteRoleId());
+
+            await interaction.reply({
+                flags: ["Ephemeral"],
+                content: `${icon.action_check} Sua licença foi encerrada com sucesso.`
+            })
         }
     },
 
