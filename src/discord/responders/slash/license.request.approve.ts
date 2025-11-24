@@ -1,6 +1,5 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
-import { getAusenteRoleId, getOuvidoriaDPRoleId } from "../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../functions/utils/emojis.js";
 import { licenseRequestApproveContainer } from "../../containers/commands/slash/public/license.request.approve.js";
 
@@ -8,7 +7,7 @@ createResponder({
     customId: "license/approve/:memberId",
     types: [ResponderType.Button], cache: "cached",
     async run(interaction, { memberId }) {
-        if (!interaction.member.roles.cache.has(await getOuvidoriaDPRoleId())) {
+        if (!interaction.member.roles.cache.has(dbroles.dp_roles.ouvidoriadpRoleId)) {
             await interaction.reply({
                 flags: ["Ephemeral"],
                 content: `${icon.action_x} Você não possui permissão para realizar a aprovação.`
@@ -39,7 +38,7 @@ createResponder({
             return;
         }
 
-        await interaction.member.roles.add(await getAusenteRoleId());
+        await interaction.member.roles.add(dbroles.others_roles.ausenteRoleId);
 
         await docRef.update({
             status: "Licença em andamento"

@@ -21,3 +21,4 @@
 *.db
 *.development.json
 *.env
+.env

@@ -1,6 +1,5 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
-import { getOuvidoriaDPRoleId } from "../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../functions/utils/emojis.js";
 import { licenseRequestReproveContainer } from "../../containers/commands/slash/public/license.request.reprove.js";
 
@@ -8,7 +7,7 @@ createResponder({
     customId: "license/reprove/:memberId",
     types: [ResponderType.Button], cache: "cached",
     async run(interaction, { memberId }) {
-        if (!interaction.member.roles.cache.has(await getOuvidoriaDPRoleId())) {
+        if (!interaction.member.roles.cache.has(dbroles.dp_roles.ouvidoriadpRoleId)) {
             await interaction.reply({
                 flags: ["Ephemeral"],
                 content: `${icon.action_x} Você não possui permissão para realizar a reprovação.`

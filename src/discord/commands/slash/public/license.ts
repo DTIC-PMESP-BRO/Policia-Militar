@@ -1,7 +1,6 @@
 import { createCommand } from "#base";
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 import { db } from "../../../../database/firestore.js";
-import { getAusenteRoleId } from "../../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../../functions/utils/emojis.js";
 import { createLicenseRequest } from "../../../../functions/utils/license/createLicenseRequest.js";
 import { licenseRequestContainer } from "../../../containers/commands/slash/public/license.request.js";
@@ -110,7 +109,7 @@ createCommand({
 
             await docRef.delete()
 
-            await interaction.member.roles.remove(await getAusenteRoleId());
+            await interaction.member.roles.remove(dbroles.others_roles.ausenteRoleId);
 
             await solicitacoesdpChannel.send({
                 flags: ["IsComponentsV2"],

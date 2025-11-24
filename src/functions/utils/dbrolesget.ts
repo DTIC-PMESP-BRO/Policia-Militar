@@ -1,35 +1,36 @@
 import { db } from "../../database/firestore.js";
 
-export async function getAusenteRoleId(): Promise<string> {
-  const docRef = db.collection("roles").doc("others_roles");
-  const doc = await docRef.get();
-
-  if (!doc.exists) {
-    throw new Error("Documento 'others_roles' não encontrado.");
-  }
-
-  const data = doc.data();
-
-  if (!data?.ausenteRoleId) {
-    throw new Error("Campo 'ausenteRoleId' não encontrado no documento.");
-  }
-
-  return data.ausenteRoleId as string;
+export interface RolesSchema {
+  others_roles: {
+    ausenteRoleId: string;
+  };
+  dp_roles: {
+    diretoriadepessoalRoleId: string;
+    ouvidoriadpRoleId: string;
+  };
+  dl_roles: {
+    diretoriadelogisticaRoleId: string;
+  };
+  dec_roles: {
+    diretoriadeeducacaoRoleId: string;
+    instrutorRoleId: string;
+    apmbbRoleId: string;
+    essdRoleId: string;
+  };
 }
 
-export async function getOuvidoriaDPRoleId(): Promise<string> {
-  const docRef = db.collection("roles").doc("dp_roles");
-  const doc = await docRef.get();
+export async function loadRolesFromDB(): Promise<RolesSchema> {
+  const snapshot = await db.collection("roles").get();
 
-  if (!doc.exists) {
-    throw new Error("Documento 'dp_roles' não encontrado.");
-  }
+  const result: any = {};
 
-  const data = doc.data();
+  snapshot.forEach((doc) => {
+    result[doc.id] = doc.data();
+  });
 
-  if (!data?.ouvidoriadpRoleId) {
-    throw new Error("Campo 'ausenteRoleId' não encontrado no documento.");
-  }
-
-  return data.ouvidoriadpRoleId as string;
+  return result as RolesSchema;
 }
+
+export const dbroles: RolesSchema = await loadRolesFromDB();
+
+globalThis.dbroles = dbroles;
