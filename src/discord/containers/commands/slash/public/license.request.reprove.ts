@@ -11,7 +11,7 @@ export async function licenseRequestReproveContainer(memberDp: GuildMember, memb
                     `${icon.calendar_x} Licença Reprovada`,
                     `${icon.clock} ${time(new Date(), TimestampStyles.LongDateShortTime)}`,
                     `${icon.user} ${member.user} (${member.id})`,
-                    `${icon.arrow_right} <@${await getOuvidoriaDPRoleId}>`
+                    `${icon.arrow_right} <@${await getOuvidoriaDPRoleId()}>`
                 ),
                 {
                     media: {

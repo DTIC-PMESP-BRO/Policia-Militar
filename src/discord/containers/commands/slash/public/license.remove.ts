@@ -11,7 +11,7 @@ export async function licenseRemoveContainer(member: GuildMember) {
                     `${icon.calendar_remove}  Licença Encerrada`,
                     `${icon.clock} ${time(new Date(), TimestampStyles.LongDateShortTime)}`,
                     `${icon.user} ${member.user} (${member.id})`,
-                    `${icon.arrow_right} <@${await getOuvidoriaDPRoleId}>`
+                    `${icon.arrow_right} <@${await getOuvidoriaDPRoleId()}>`
                 ),
                 {
                     media: {
