@@ -74,6 +74,17 @@ createCommand({
         }
 
         if (acao === "Solicitar licença") {
+            const docRef = db.collection("licenses").doc(interaction.member.id);
+            const doc = await docRef.get();
+
+            if (doc.exists) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Você já possui uma licença em aberto.`
+                })
+                return;
+            }
+
             await interaction.reply({
                 flags: ["Ephemeral"],
                 content: `${icon.action_check} Sua solicitação foi enviada a Diretoria de Pessoal.`
@@ -103,6 +114,14 @@ createCommand({
                 await interaction.reply({
                     flags: ["Ephemeral"],
                     content: `${icon.action_x} Os dados do documento estão vazios, contate a equipe de desenvolvimento.`
+                })
+                return;
+            }
+
+            if (data.status === "Aguardando Aprovação") {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Não é possível retirar uma licença em processo de aprovação.`
                 })
                 return;
             }

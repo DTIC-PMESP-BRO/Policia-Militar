@@ -7,7 +7,7 @@ export async function licenseApprovedContainer(memberDp: GuildMember, member: Gu
         components: [
             createSection(
                 brBuilder(
-                    `${icon.clock_check} Licença Aprovada`,
+                    `## ${icon.clock_check} Licença Aprovada`,
                     `${icon.clock} ${time(new Date(), TimestampStyles.LongDateShortTime)}`,
                     `${icon.user} ${member.user} (${member.id})`
                 ),
