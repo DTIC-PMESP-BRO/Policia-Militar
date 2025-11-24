@@ -1,4 +1,5 @@
 import { createCommand } from "#base";
+import { brBuilder } from "@magicyan/discord";
 import { ApplicationCommandOptionType, ApplicationCommandType, time, TimestampStyles } from "discord.js";
 import { promises as fs } from "fs";
 import { icon } from "../../../../functions/utils/emojis.js";
@@ -82,14 +83,14 @@ createCommand({
     async run(interaction) {
         if (interaction.options.getSubcommand() !== "bopm") return;
 
-        const militares = interaction.options.getString("militares");
-        const origem = interaction.options.getString("origem");
-        const endereco = interaction.options.getString("endereco");
-        const resultado = interaction.options.getString("resultado");
-        const artigos = interaction.options.getString("artigos");
-        const descricao = interaction.options.getString("descricao");
-        const acusado = interaction.options.getString("acusado");
-        const foto = interaction.options.getAttachment("foto");
+        const militares = interaction.options.getString("militares")!;
+        const origem = interaction.options.getString("origem")!;
+        const endereco = interaction.options.getString("endereco")!;
+        const resultado = interaction.options.getString("resultado")!;
+        const artigos = interaction.options.getString("artigos")!;
+        const descricao = interaction.options.getString("descricao")!;
+        const acusado = interaction.options.getString("acusado")!;
+        const foto = interaction.options.getAttachment("foto")!;
         const vitima = interaction.options.getString("vitima") ?? "Não Há";
         const outro = interaction.options.getString("outro") ?? "Não Há";
 
@@ -100,11 +101,8 @@ createCommand({
         }
 
         let nbopm = parseInt(constantsData.bopm.bopmatual);
-
         nbopm++;
-
         constantsData.bopm.bopmatual = String(nbopm);
-
         await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
 
         const bopmChannel = await interaction.guild.channels.fetch(constants.channels.bopmChannelId);
@@ -113,31 +111,54 @@ createCommand({
         let messagemd = await fs.readFile('src/discord/messages/bopm/bopm.base.md', 'utf-8');
 
         messagemd = messagemd
-            .replace(/\$\{nbopm\}/g, String(nbopm!))
-            .replace(/\$\{militares\}/g, militares!)
+            .replace(/\$\{nbopm\}/g, String(nbopm))
+            .replace(/\$\{militares\}/g, militares)
             .replace(/\$\{data\}/g, time(new Date(), TimestampStyles.LongDateShortTime))
-            .replace(/\$\{origem\}/g, origem!)
-            .replace(/\$\{endereco\}/g, endereco!)
-            .replace(/\$\{resultado\}/g, resultado!)
-            .replace(/\$\{artigos\}/g, artigos!)
-            .replace(/\$\{acusado\}/g, acusado!)
-            .replace(/\$\{vitima\}/g, vitima!)
-            .replace(/\$\{outro\}/g, outro!)
-            .replace(/\$\{descricao\}/g, descricao!)
+            .replace(/\$\{origem\}/g, origem)
+            .replace(/\$\{endereco\}/g, endereco)
+            .replace(/\$\{resultado\}/g, resultado)
+            .replace(/\$\{artigos\}/g, artigos)
+            .replace(/\$\{acusado\}/g, acusado)
+            .replace(/\$\{vitima\}/g, vitima)
+            .replace(/\$\{outro\}/g, outro)
             .replace(/\$\{interaction\.user\}/g, `<@${interaction.user.id}>`);
+
+        const mensagemComDescricao = messagemd.replace(/\$\{descricao\}/g, descricao);
+
+        let mainMessageContent = mensagemComDescricao;
+        let descricaoParaTopico: string | null = null;
+
+        if (mensagemComDescricao.length > 2000) {
+            mainMessageContent = messagemd.replace(/\$\{descricao\}/g, "Adicionada ao tópico anexado a este.");
+            descricaoParaTopico = descricao;
+        }
+
+        const mainMessage = await bopmChannel.send({
+            content: mainMessageContent,
+            files: [foto]
+        });
+
+        if (descricaoParaTopico) {
+            const messageThread = await mainMessage.startThread({
+                name: `BO nº ${nbopm}`,
+                autoArchiveDuration: 1440,
+                reason: `BO nº ${nbopm} tem sua descrição mais que o esperado.`
+            });
+
+            await messageThread.send({
+                content: brBuilder(
+                    `**Descrição Completa:**`,
+                    `${descricaoParaTopico}`
+                )
+            });
+        }
 
         await interaction.reply({
             flags: ["Ephemeral"],
             content: `${icon.action_check} Boletim registrado com sucesso.`
-        })
-
-        await bopmChannel.send({
-            content: messagemd,
-            files: [foto!]
         });
     },
 
-    // Autocomplete do campo "origem", "resultado"
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused(true);
 
