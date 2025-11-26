@@ -1,6 +1,8 @@
 import { createCommand } from "#base";
-import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
+import { ApplicationCommandOptionType, ApplicationCommandType, time, TimestampStyles } from "discord.js";
 import { icon } from "../../../../functions/utils/emojis.js";
+import { cautelaCreateContainer } from "../../../containers/commands/slash/public/cautela.create.js";
+import { createCautelaDocument } from "../../../../functions/utils/createCautelaDocument.js";
 
 
 const prefixoInfo: Record<string, { modelo: string; opm: string; call: number }> = {
@@ -58,8 +60,7 @@ createCommand({
         const prefixo = interaction.options.getString("prefixo")!;
         const motivo = interaction.options.getString("motivo")!;
 
-        const timestamp = Math.floor(Date.now() / 1000);
-        const dataHoraDiscord = `<t:${timestamp}:F>`;
+        const dataHoraDiscord = time(new Date(), TimestampStyles.FullDateShortTime);
 
         const info = prefixoInfo[prefixo] || {
             modelo: "Não informado",
@@ -70,6 +71,12 @@ createCommand({
         const cautelaChannel = await interaction.guild.channels.fetch(constants.channels.cautelaChannelId);
         if (!cautelaChannel?.isTextBased()) return;
 
+        await cautelaChannel.send({
+            flags: ["IsComponentsV2"],
+            components: [cautelaCreateContainer(interaction.member, militares, info.opm, info.modelo, prefixo, motivo, dataHoraDiscord)]
+        })
+
+        await createCautelaDocument(interaction.member.id, militares, info.opm, info.modelo, prefixo, motivo, dataHoraDiscord)
 
         await interaction.reply({
             flags: ["Ephemeral"],

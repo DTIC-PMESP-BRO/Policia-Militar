@@ -2,7 +2,7 @@ import { brBuilder, createContainer, createSection, createTextDisplay, Separator
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember } from "discord.js";
 import { icon } from "../../../../../functions/utils/emojis.js";
 
-export async function cautelaCreateContainer(member: GuildMember, opm: string, modelo: string, prefixo: string, motivo: string, timestamp: string) {
+export function cautelaCreateContainer(member: GuildMember, militares: string, opm: string, modelo: string, prefixo: string, motivo: string, timestamp: string) {
     return createContainer({
         components: [
             createSection(
@@ -20,6 +20,7 @@ export async function cautelaCreateContainer(member: GuildMember, opm: string, m
             Separator.Large,
             createTextDisplay(
                 brBuilder(
+                    `> **Militares:** ${militares}`,
                     `> **OPM:** ${opm}`,
                     `> **Modelo da viatura:** ${modelo}`,
                     `> **Prefixo:** ${prefixo}`,
