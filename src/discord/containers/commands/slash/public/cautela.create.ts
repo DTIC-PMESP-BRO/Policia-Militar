@@ -1,5 +1,5 @@
 import { brBuilder, createContainer, createSection, createTextDisplay, Separator } from "@magicyan/discord";
-import { GuildMember } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember } from "discord.js";
 import { icon } from "../../../../../functions/utils/emojis.js";
 
 export async function cautelaCreateContainer(member: GuildMember, opm: string, modelo: string, prefixo: string, motivo: string, timestamp: string) {
@@ -26,7 +26,18 @@ export async function cautelaCreateContainer(member: GuildMember, opm: string, m
                     `> **Motivo:** ${motivo}`,
                     `> **Data/Hora:** ${timestamp}`,
                 )
-            )
+            ),
+            Separator.LargeHidden,
+            new ActionRowBuilder({
+                components: [
+                    new ButtonBuilder({
+                        customId: `cautela/close/${member.id}`,
+                        emoji: icon.action_check,
+                        label: "Fechar Cautelamento",
+                        style: ButtonStyle.Success,
+                    })
+                ]
+            })
         ]
     });
 }
