@@ -5,6 +5,6 @@ createResponder({
     customId: "registro/modal/send",
     types: [ResponderType.Button], cache: "cached",
     async run(interaction) {
-        await interaction.showModal(registroSendModal())
+        await interaction.showModal(await registroSendModal())
     },
 });

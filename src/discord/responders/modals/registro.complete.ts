@@ -3,13 +3,13 @@ import { icon } from "../../../functions/utils/emojis.js";
 
 createResponder({
     customId: "registro/modal/pag1",
-    types: [ResponderType.Modal], cache: "cached",
+    types: [ResponderType.ModalComponent], cache: "cached",
     async run(interaction) {
         const fields = interaction.fields;
 
-        const name = fields.getTextInputValue("registro/modal/pag1/nome");
-        const rg = fields.getTextInputValue("registro/modal/pag1/rg");
-        const opm = fields.getTextInputValue("registro/modal/pag1/opm");
+        const name = fields.getTextInputValue("nome");
+        const rg = fields.getTextInputValue("rg");
+        const [opm] = fields.getStringSelectValues("opm");
 
         await interaction.reply({
             flags: ["Ephemeral"],

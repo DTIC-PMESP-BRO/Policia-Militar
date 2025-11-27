@@ -1,8 +1,8 @@
 import { ComponentType, LabelBuilder, ModalBuilder, TextInputStyle } from "discord.js";
 
-export function registroSendModal() {
+export async function registroSendModal() {
     return new ModalBuilder({
-        customId: "registro/modal/pag1",
+        custom_id: "registro/modal/pag1",
         title: "Registro Estatístico - PMESP",
         components: [
             new LabelBuilder({
@@ -11,7 +11,7 @@ export function registroSendModal() {
                 component: {
                     type: ComponentType.TextInput,
                     style: TextInputStyle.Short,
-                    custom_id: "registro/modal/pag1/nome",
+                    custom_id: "nome",
                     required: true
                 }
             }),
@@ -21,7 +21,7 @@ export function registroSendModal() {
                 component: {
                     type: ComponentType.TextInput,
                     style: TextInputStyle.Short,
-                    custom_id: "registro/modal/pag1/rg",
+                    custom_id: "rg",
                     required: true
                 }
             }),
@@ -30,7 +30,7 @@ export function registroSendModal() {
                 description: "Selecione a OPM do seu personagem.",
                 component: {
                     type: ComponentType.StringSelect,
-                    custom_id: "registro/modal/pag1/opm",
+                    custom_id: "opm",
                     required: true,
                     options: [
                         { label: "Gabinente do Comando Geral", value: "Gabinente do Comando Geral", },
@@ -54,3 +54,5 @@ export function registroSendModal() {
         ]
     })
 }
+
+
