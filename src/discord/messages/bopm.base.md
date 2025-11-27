@@ -17,6 +17,6 @@
 
 *Descrição da ocorrência:* ${descricao}
 
-Anexo:
-
 -# Publicado por ${interaction.user}
+
+Anexo:
