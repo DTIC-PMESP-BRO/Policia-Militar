@@ -1,11 +1,11 @@
-import { createEvent } from "#base";
-import { ChatInputCommandInteraction } from "discord.js";
-import { commandSlashLog } from "../../../../functions/utils/commandslogs.js";
+// import { createEvent } from "#base";
+// import { ChatInputCommandInteraction } from "discord.js";
+// import { commandSlashLog } from "../../../../functions/utils/commandslogs.js";
 
-createEvent({
-    name: "slash.command.event",
-    event: "interactionCreate",
-    async run(interaction: ChatInputCommandInteraction) {
-        commandSlashLog(interaction)
-    }
-});
+// createEvent({
+//     name: "slash.command.event",
+//     event: "interactionCreate",
+//     async run(interaction: ChatInputCommandInteraction) {
+//         commandSlashLog(interaction)
+//     }
+// });
