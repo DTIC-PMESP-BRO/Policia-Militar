@@ -1,9 +1,8 @@
 import { brBuilder, createContainer, createSection, createTextDisplay, Separator } from "@magicyan/discord";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Guild, GuildMember, time, TimestampStyles } from "discord.js";
-import { createDiscordName } from "../../../../functions/utils/createDiscordName.js";
+import { GuildMember, time, TimestampStyles } from "discord.js";
 import { icon } from "../../../../functions/utils/emojis.js";
 
-export async function registroToDPContainer(member: GuildMember, guild: Guild, nome: string, rg: string, patente: string, opm: string) {
+export function registroFinishContainer(dpmember: GuildMember, member: GuildMember, nome: string, rg: string, patente: string, opm: string) {
     return createContainer({
         components: [
             createSection(
@@ -11,7 +10,7 @@ export async function registroToDPContainer(member: GuildMember, guild: Guild, n
                     `## ${icon.dp} Registro Estatístico`,
                     `${icon.clock} ${time(new Date(), TimestampStyles.LongDateShortTime)}`,
                     `${icon.user} ${member.user} (${member.id})`,
-                    `${icon.arrow_right} <@&${dbroles.dp_roles.ouvidoriadpRoleId}>`
+                    `${icon.arrow_right} Aprovado por: ${dpmember}`
                 ),
                 {
                     media: {
@@ -47,35 +46,7 @@ export async function registroToDPContainer(member: GuildMember, guild: Guild, n
                     `**${icon.other_bank} OPM**`,
                     opm,
                 )
-            ),
-            Separator.Hidden,
-            createTextDisplay(
-                brBuilder(
-                    `**${icon.user} Apelido Servidor**`,
-                    await createDiscordName(member.id, guild),
-                )
-            ),
-            Separator.LargeHidden,
-            new ActionRowBuilder({
-                components: [
-                    new ButtonBuilder({
-                        customId: `registro/modal/finish/approve/${member.id}`,
-                        emoji: icon.action_check,
-                        label: "Aprovar Registro",
-                        style: ButtonStyle.Success,
-                    })
-                ]
-            }),
-            new ActionRowBuilder({
-                components: [
-                    new ButtonBuilder({
-                        customId: `registro/modal/finish/reprove/${member.id}`,
-                        emoji: icon.action_x,
-                        label: "Reprovar Registro",
-                        style: ButtonStyle.Danger,
-                    })
-                ]
-            })
+            )
         ]
     });
 }

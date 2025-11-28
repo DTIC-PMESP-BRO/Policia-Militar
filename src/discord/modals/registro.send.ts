@@ -26,6 +26,30 @@ export async function registroSendModal() {
                 }
             }),
             new LabelBuilder({
+                label: "Patente do Personagem",
+                description: "Selecione sua graduação/posto do seu personagem.",
+                component: {
+                    type: ComponentType.StringSelect,
+                    custom_id: "patente",
+                    required: true,
+                    options: [
+                        { label: "Coronel PM", value: "CEL PM" },
+                        { label: "Tenente-Coronel PM", value: "TC PM" },
+                        { label: "Major PM", value: "MAJ PM" },
+                        { label: "Capitão PM", value: "CAP PM" },
+                        { label: "1º Tenente PM", value: "1º TEN PM" },
+                        { label: "2º Tenente PM", value: "2º TEN PM" },
+                        { label: "Aspirante a Oficial PM", value: "ASP PM" },
+                        { label: "Subtenente PM", value: "SUBTEN PM" },
+                        { label: "1º Sargento PM", value: "1º SGT PM" },
+                        { label: "2º Sargento PM", value: "2º SGT PM" },
+                        { label: "3º Sargento PM", value: "3º SGT PM" },
+                        { label: "Cabo PM", value: "CB PM" },
+                        { label: "Soldado PM", value: "SD PM" },
+                    ]
+                }
+            }),
+            new LabelBuilder({
                 label: "OPM do Personagem",
                 description: "Selecione a OPM do seu personagem.",
                 component: {
@@ -35,6 +59,7 @@ export async function registroSendModal() {
                     options: [
                         { label: "Gabinente do Comando Geral", value: "Gabinente do Comando Geral", },
                         { label: "Estado-Maior da Polícia Militar", value: "Estado-Maior da Polícia Militar", },
+                        { label: "Corregedoria da Polícia Militar", value: "Corregedoria da Polícia Militar", },
                         { label: "Diretoria de Educação e Cultura", value: "Diretoria de Educação e Cultura", },
                         { label: "Diretoria de Pessoal", value: "Diretoria de Pessoal", },
                         { label: "Diretoria de Logística", value: "Diretoria de Logística", },
