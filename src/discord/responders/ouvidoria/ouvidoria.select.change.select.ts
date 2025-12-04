@@ -2,7 +2,7 @@ import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
 import { icon } from "../../../functions/utils/emojis.js";
 import { ouvidoriaCreateFirestore } from "../../../functions/utils/ouvidoria/ouvidoria.create.js";
-import { ouvidoriaCorregNumberMinus, ouvidoriaDPNumberMinus } from "../../../functions/utils/ouvidoria/ouvidoria.numberCreate.js";
+import { ouvidoriaCorregNumberMinus, ouvidoriaDPNumberMinus, ouvidoriaEMNumberMinus } from "../../../functions/utils/ouvidoria/ouvidoria.numberCreate.js";
 import { ouvidoriaSelectContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.select.js";
 
 
@@ -42,6 +42,9 @@ createResponder({
             case "Corregedoria da Polícia Militar":
                 ouvidoriaCorregNumberMinus()
                 break;
+            case "Estado Maior da Polícia Militar":
+                ouvidoriaEMNumberMinus()
+                break;
             default:
                 ouvidoriaDPNumberMinus()
                 break;
@@ -55,6 +58,10 @@ createResponder({
             case "ouvidoriacorreg":
                 await docRef.delete()
                 ouvidoriaResponsavelNumber = await ouvidoriaCreateFirestore(interaction.member.id, "Corregedoria da Polícia Militar", icon.correg.toString(), dbroles.correg_roles.corregedoriaRoleId)
+                break;
+            case "ouvidoriaempm":
+                await docRef.delete()
+                ouvidoriaResponsavelNumber = await ouvidoriaCreateFirestore(interaction.member.id, "Estado Maior da Polícia Militar", icon.correg.toString(), dbroles.correg_roles.corregedoriaRoleId)
                 break;
             default:
                 await docRef.delete()

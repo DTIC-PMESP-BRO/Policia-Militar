@@ -26,6 +26,7 @@ export function ouvidoriaSelectChangeContainer(member: GuildMember, ouvidoriaEmo
                 options: [
                     { label: "Ouvidoria - Diretoria de Pessoal", value: "ouvidoriadp", emoji: icon.dp },
                     { label: "Ouvidoria - Corregedoria", value: "ouvidoriacorreg", emoji: icon.correg },
+                    { label: "Ouvidoria - Estado Maior", value: "ouvidoriaempm", emoji: icon.empm },
                 ],
                 placeholder: "Selecione Qual Atendimento Desejas Receber"
             })

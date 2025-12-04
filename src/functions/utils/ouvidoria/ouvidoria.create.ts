@@ -1,5 +1,5 @@
 import { db } from "../../../database/firestore.js";
-import { ouvidoriaCorregNumber, ouvidoriaDPNumber } from "./ouvidoria.numberCreate.js";
+import { ouvidoriaCorregNumber, ouvidoriaDPNumber, ouvidoriaEMNumber } from "./ouvidoria.numberCreate.js";
 
 export async function ouvidoriaCreateFirestore(memberId: string, ouvidoriaResponsavel: string, ouvidoriaEmoji: any, ouvidoriaRoleId: string): Promise<string> {
     let ouvidoriaResponsavelNumber;
@@ -13,6 +13,10 @@ export async function ouvidoriaCreateFirestore(memberId: string, ouvidoriaRespon
         case "Corregedoria da Polícia Militar":
             ouvidoriaResponsavelNumber = await ouvidoriaCorregNumber()
             ouvidoriaResponsavelType = "2"
+            break;
+        case "Estado Maior da Polícia Militar":
+            ouvidoriaResponsavelNumber = await ouvidoriaEMNumber()
+            ouvidoriaResponsavelType = "3"
             break;
         default:
             ouvidoriaResponsavelNumber = await ouvidoriaDPNumber()

@@ -22,6 +22,9 @@ export interface RolesSchema {
   };
   postos_roles: {
     oficiaisSuperioresRoleId: string;
+  };
+  empm_roles: {
+    estadomaiorRoleId: string;
   }
 }
 

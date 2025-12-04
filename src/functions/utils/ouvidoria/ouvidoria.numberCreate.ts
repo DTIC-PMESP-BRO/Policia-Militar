@@ -69,3 +69,39 @@ export async function ouvidoriaDPNumberMinus() {
 
     return ouvidoriadpnumber;
 }
+
+export async function ouvidoriaEMNumber() {
+    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+
+    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriaemnumber) {
+        constantsData.ouvidoriapmesp.ouvidoriaemnumber = "0";
+    }
+
+    let ouvidoriaemnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriaemnumber);
+
+    ouvidoriaemnumber++;
+
+    constantsData.ouvidoriapmesp.ouvidoriaemnumber = String(ouvidoriaemnumber);
+
+    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+
+    return ouvidoriaemnumber;
+}
+
+export async function ouvidoriaEMNumberMinus() {
+    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+
+    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriaemnumber) {
+        constantsData.ouvidoriapmesp.ouvidoriaemnumber = "0";
+    }
+
+    let ouvidoriaemnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriaemnumber);
+
+    ouvidoriaemnumber--;
+
+    constantsData.ouvidoriapmesp.ouvidoriaemnumber = String(ouvidoriaemnumber);
+
+    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+
+    return ouvidoriaemnumber;
+}

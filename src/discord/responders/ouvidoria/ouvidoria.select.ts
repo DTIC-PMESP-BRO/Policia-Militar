@@ -13,7 +13,7 @@ createResponder({
         let ouvidoriaEmoji;
         let ouvidoriaRoleId;
 
-        switch(selected) {
+        switch (selected) {
             case "ouvidoriadp":
                 ouvidoriaResponsavel = "Diretoria de Pessoal da Polícia Militar"
                 ouvidoriaEmoji = icon.dp
@@ -23,6 +23,11 @@ createResponder({
                 ouvidoriaResponsavel = "Corregedoria da Polícia Militar"
                 ouvidoriaEmoji = icon.correg
                 ouvidoriaRoleId = dbroles.correg_roles.corregedoriaRoleId
+                break;
+            case "ouvidoriaempm":
+                ouvidoriaResponsavel = "Estado Maior da Polícia Militar"
+                ouvidoriaEmoji = icon.empm
+                ouvidoriaRoleId = dbroles.empm_roles.estadomaiorRoleId
                 break;
             default:
                 ouvidoriaResponsavel = "Ouvidoria Não Identificada"

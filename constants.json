@@ -47,6 +47,7 @@
     },
     "ouvidoriapmesp": {
         "ouvidoriadpnumber": "0",
-        "ouvidoriacorregnumber": "0"
+        "ouvidoriacorregnumber": "0",
+        "ouvidoriaemnumber": "0"
     }
 }

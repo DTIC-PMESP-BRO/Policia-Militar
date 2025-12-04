@@ -1,7 +1,7 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
 import { icon } from "../../../functions/utils/emojis.js";
-import { ouvidoriaCorregNumberMinus, ouvidoriaDPNumberMinus } from "../../../functions/utils/ouvidoria/ouvidoria.numberCreate.js";
+import { ouvidoriaCorregNumberMinus, ouvidoriaDPNumberMinus, ouvidoriaEMNumberMinus } from "../../../functions/utils/ouvidoria/ouvidoria.numberCreate.js";
 import { ouvidoriaSelectCancelContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.select.cancel.js";
 
 createResponder({
@@ -37,6 +37,9 @@ createResponder({
                 break;
             case "Corregedoria da Polícia Militar":
                 ouvidoriaCorregNumberMinus()
+                break;
+            case "Estado Maior da Polícia Militar":
+                ouvidoriaEMNumberMinus()
                 break;
             default:
                 ouvidoriaDPNumberMinus()
