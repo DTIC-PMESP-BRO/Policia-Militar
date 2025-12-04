@@ -61,7 +61,7 @@ createResponder({
                 break;
             case "ouvidoriaempm":
                 await docRef.delete()
-                ouvidoriaResponsavelNumber = await ouvidoriaCreateFirestore(interaction.member.id, "Estado Maior da Polícia Militar", icon.correg.toString(), dbroles.correg_roles.corregedoriaRoleId)
+                ouvidoriaResponsavelNumber = await ouvidoriaCreateFirestore(interaction.member.id, "Estado Maior da Polícia Militar", icon.correg.toString(), dbroles.empm_roles.estadomaiorRoleId)
                 break;
             default:
                 await docRef.delete()
