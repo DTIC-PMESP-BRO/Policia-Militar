@@ -26,6 +26,7 @@
         "solicitacaofardamentoChannelId": "1407933678406995979",
         "registroestatisticoChannelId": "1443985467082280990",
         "suggestionsChannelId": "1442614177494470757",
+        "ouvidoriaChannelId": "1445960861322838046",
         "cautelaChannelId": "1443269372188692521"
     },
     "suggestions": {
@@ -39,9 +40,13 @@
         }
     },
     "bopm": {
-        "bopmatual": "3"
+        "bopmatual": "0"
     },
     "ouvidoriaDp": {
         "alteracaoatual": "0"
+    },
+    "ouvidoriapmesp": {
+        "ouvidoriadpnumber": "0",
+        "ouvidoriacorregnumber": "0"
     }
 }

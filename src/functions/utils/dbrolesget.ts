@@ -17,6 +17,12 @@ export interface RolesSchema {
     apmbbRoleId: string;
     essdRoleId: string;
   };
+  correg_roles: {
+    corregedoriaRoleId: string;
+  };
+  postos_roles: {
+    oficiaisSuperioresRoleId: string;
+  }
 }
 
 export async function loadRolesFromDB(): Promise<RolesSchema> {
