@@ -33,21 +33,32 @@
       "messageId": "a",
       "userId": "b"
     },
-    "1": {
-      "messageId": "https://discord.com/channels/1407933677312151602/1442614177494470757/1443986124702748714",
-      "userId": "963451712595710042"
+    "channels": {
+        "logsChannelId": "1407933678230700162",
+        "solicitacoesdpChannelId": "1407933678406995979",
+        "bopmChannelId": "1442612832481841203",
+        "talapreesChannelId": "1444024016892465365",
+        "alteracoesouvidoriaChannelId": "1407933678406995979",
+        "solicitacaofardamentoChannelId": "1407933678406995979",
+        "registroestatisticoChannelId": "1443985467082280990",
+        "suggestionsChannelId": "1442614177494470757",
+        "ouvidoriaChannelId": "1445960861322838046",
+        "cautelaChannelId": "1443269372188692521"
     },
     "2": {
       "messageId": "temp",
       "userId": "1052066238442000444"
     },
-    "3": {
-      "messageId": "temp",
-      "userId": "963451712595710042"
+    "bopm": {
+        "bopmatual": "0"
     },
-    "4": {
-      "messageId": "https://discord.com/channels/952718760182161478/952963891116273664/1445059184277323777",
-      "userId": "963451712595710042"
+    "ouvidoriaDp": {
+        "alteracaoatual": "0"
+    },
+    "ouvidoriapmesp": {
+        "ouvidoriadpnumber": "0",
+        "ouvidoriacorregnumber": "0",
+        "ouvidoriaemnumber": "0"
     }
   },
   "bopm": {

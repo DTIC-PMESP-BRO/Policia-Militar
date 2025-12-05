@@ -6,11 +6,17 @@ interface Suggestion {
   userId: string;
 }
 
+interface Ouvidoria {
+  ouvidoriadpnumber: string;
+  ouvidoriacorregnumber: string;
+}
+
 interface Constants {
   colors: Record<string, string>;
   roles: Record<string, string>;
   channels: Record<string, string>;
   suggestions: Record<string, Suggestion>;
+  ouvidoriapmesp: Record<string, Ouvidoria>;
 }
 
 const constantsPath = path.resolve("constants.json");
