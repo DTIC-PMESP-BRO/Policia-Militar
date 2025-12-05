@@ -1,14 +1,14 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
-import { getOuvidoriaDPRoleId } from "../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../functions/utils/emojis.js";
+import { licenseReprovedContainer } from "../../containers/commands/slash/public/license.reproved.js";
 import { licenseRequestReproveContainer } from "../../containers/commands/slash/public/license.request.reprove.js";
 
 createResponder({
     customId: "license/reprove/:memberId",
     types: [ResponderType.Button], cache: "cached",
     async run(interaction, { memberId }) {
-        if (!interaction.member.roles.cache.has(await getOuvidoriaDPRoleId())) {
+        if (!interaction.member.roles.cache.has(dbroles.dp_roles.ouvidoriadpRoleId)) {
             await interaction.reply({
                 flags: ["Ephemeral"],
                 content: `${icon.action_x} Você não possui permissão para realizar a reprovação.`
@@ -47,7 +47,8 @@ createResponder({
 
         try {
             await solicitante.send({
-                content: `${icon.action_x} Sua solicitação foi reprovada pela Diretoria de Pessoal.`
+                flags: ["IsComponentsV2"],
+                components: [await licenseReprovedContainer(interaction.member, solicitante, data.motivo, data.tempo, data.observacoes)]
             })
         } catch (error) {
             console.error(`Erro ao enviar uma mensangem na DM de ${solicitante.user.username}:`, error);

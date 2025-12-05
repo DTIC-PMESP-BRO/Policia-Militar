@@ -12,6 +12,7 @@
 
 # Config files
 /firebase.json
+/firestore.key.json
 
 # Extensions
 *.zip
@@ -20,3 +21,7 @@
 *.exe
 *.db
 *.development.json
+*.env
+.env
+*.key.json
+.key.json
