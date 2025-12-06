@@ -1,6 +1,5 @@
 import { brBuilder, createContainer, createSection, createTextDisplay, Separator } from "@magicyan/discord";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, time, TimestampStyles } from "discord.js";
-import { getOuvidoriaDPRoleId } from "../../../../../functions/utils/dbrolesget.js";
 import { icon } from "../../../../../functions/utils/emojis.js";
 
 export async function licenseRequestContainer(member: GuildMember, motivo: string, tempo: string, observacoes: string) {
@@ -8,10 +7,10 @@ export async function licenseRequestContainer(member: GuildMember, motivo: strin
         components: [
             createSection(
                 brBuilder(
-                    `${icon.calendar_add}  Solicitação de Licença`,
+                    `## ${icon.clock_add}  Solicitação de Licença`,
                     `${icon.clock} ${time(new Date(), TimestampStyles.LongDateShortTime)}`,
                     `${icon.user} ${member.user} (${member.id})`,
-                    `${icon.arrow_right} <@&${await getOuvidoriaDPRoleId()}>`
+                    `${icon.arrow_right} <@&${dbroles.dp_roles.ouvidoriadpRoleId}>`
                 ),
                 {
                     media: {

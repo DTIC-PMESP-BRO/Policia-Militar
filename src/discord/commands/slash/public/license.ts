@@ -1,11 +1,10 @@
 import { createCommand } from "#base";
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 import { db } from "../../../../database/firestore.js";
-import { getAusenteRoleId } from "../../../../functions/utils/dbrolesget.js";
+import { createLicenseRequest } from "../../../../functions/utils/createLicenseRequest.js";
 import { icon } from "../../../../functions/utils/emojis.js";
-import { createLicenseRequest } from "../../../../functions/utils/license/createLicenseRequest.js";
-import { licenseRequestContainer } from "../../../containers/commands/slash/public/license.request.js";
 import { licenseRemoveContainer } from "../../../containers/commands/slash/public/license.remove.js";
+import { licenseRequestContainer } from "../../../containers/commands/slash/public/license.request.js";
 
 createCommand({
     name: "gerenciar",
@@ -57,6 +56,24 @@ createCommand({
         const solicitacoesdpChannel = await interaction.guild.channels.fetch(constants.channels.solicitacoesdpChannelId);
         if (!solicitacoesdpChannel?.isTextBased()) return;
 
+        // Função para converter texto em dias
+        function parseTempoToDays(input: string | null): number | null {
+            if (!input) return null;
+
+            const texto = input.toLowerCase().trim();
+
+            const diasMatch = texto.match(/(\d+)\s*dias?/);
+            if (diasMatch) return parseInt(diasMatch[1]);
+
+            const semanasMatch = texto.match(/(\d+)\s*semanas?/);
+            if (semanasMatch) return parseInt(semanasMatch[1]) * 7;
+
+            const mesesMatch = texto.match(/(\d+)\s*m[eê]s(es)?/);
+            if (mesesMatch) return parseInt(mesesMatch[1]) * 30;
+
+            return null;
+        }
+
         // Validações dinâmicas:
         if (acao === "Solicitar licença" && motivo === "Não há") {
             await interaction.reply({
@@ -74,7 +91,50 @@ createCommand({
             return;
         }
 
+        // ---------------- VALIDAÇÃO DO TEMPO ----------------
+        let dias = null;
+
         if (acao === "Solicitar licença") {
+            dias = parseTempoToDays(tempo);
+
+            if (dias === null) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Não consegui entender o **tempo informado**.\nExemplos válidos:\n- 7 dias\n- 2 semanas\n- 1 mês`
+                });
+                return;
+            }
+
+            if (dias < 7) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} O tempo mínimo para solicitar licença é de **7 dias**.`
+                });
+                return;
+            }
+
+            if (dias > 45) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Para solicitar licenças acima de **45 dias**, por favor abra um ticket no canal <#1442612832481841203> na sessão da **Diretoria de Pessoal**.`
+                });
+                return;
+            }
+        }
+        // ------------------------------------------------------
+
+        if (acao === "Solicitar licença") {
+            const docRef = db.collection("licenses").doc(interaction.member.id);
+            const doc = await docRef.get();
+
+            if (doc.exists) {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Você já possui uma licença em aberto.`
+                })
+                return;
+            }
+
             await interaction.reply({
                 flags: ["Ephemeral"],
                 content: `${icon.action_check} Sua solicitação foi enviada a Diretoria de Pessoal.`
@@ -86,7 +146,9 @@ createCommand({
             });
 
             await createLicenseRequest(interaction.member.id, motivo, tempo, observacoes)
-        } else if (acao === "Retirar licença") {
+        } 
+        
+        else if (acao === "Retirar licença") {
             const docRef = db.collection("licenses").doc(interaction.member.id);
             const doc = await docRef.get();
 
@@ -108,9 +170,17 @@ createCommand({
                 return;
             }
 
-            await docRef.delete()
+            if (data.status === "Aguardando Aprovação") {
+                await interaction.reply({
+                    flags: ["Ephemeral"],
+                    content: `${icon.action_x} Não é possível retirar uma licença em processo de aprovação.`
+                })
+                return;
+            }
 
-            await interaction.member.roles.remove(await getAusenteRoleId());
+            await docRef.delete();
+
+            await interaction.member.roles.remove(dbroles.others_roles.ausenteRoleId);
 
             await solicitacoesdpChannel.send({
                 flags: ["IsComponentsV2"],
@@ -120,7 +190,7 @@ createCommand({
             await interaction.reply({
                 flags: ["Ephemeral"],
                 content: `${icon.action_check} Sua licença foi encerrada com sucesso.`
-            })
+            });
         }
     },
 

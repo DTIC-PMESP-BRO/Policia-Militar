@@ -1,4 +1,4 @@
-import { db } from "../../../database/firestore.js";
+import { db } from "../../database/firestore.js";
 
 export async function createLicenseRequest(memberId: string, motivo: string, tempo: string, observacoes: string): Promise<void> {
     try {
