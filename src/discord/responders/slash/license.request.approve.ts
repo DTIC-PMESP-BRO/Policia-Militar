@@ -39,7 +39,7 @@ createResponder({
             return;
         }
 
-        await interaction.member.roles.add(dbroles.others_roles.ausenteRoleId);
+        await solicitante.roles.add(dbroles.others_roles.ausenteRoleId);
 
         await docRef.update({
             status: "Licença em andamento"
