@@ -1,88 +1,75 @@
-import { createCommand } from "#base";
 import { brBuilder } from "@magicyan/discord";
-import { ApplicationCommandOptionType, ApplicationCommandType, time, TimestampStyles } from "discord.js";
+import { ApplicationCommandOptionType, AutocompleteInteraction, ChatInputCommandInteraction, time, TimestampStyles } from "discord.js";
 import { promises as fs } from "fs";
-import { icon } from "../../../../functions/utils/emojis.js";
+import { icon } from "../../../../../functions/utils/emojis.js";
 
-createCommand({
-    name: "registrar",
-    description: "Comandos de registro",
-    type: ApplicationCommandType.ChatInput,
+export default {
     options: [
         {
-            name: "bopm",
-            description: "Registrar Boletim Policial-Militar",
-            type: ApplicationCommandOptionType.Subcommand,
-            options: [
-                {
-                    name: "militares",
-                    description: "Mencione os militares participantes. (@user, @user, @user...)",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "origem",
-                    description: "Selecione a origem da ocorrência.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    autocomplete: true
-                },
-                {
-                    name: "endereco",
-                    description: "Informe o endereço da ocorrência. (Freedom Avanue, 0000 - 000)",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "resultado",
-                    description: "Selecione a resultado da ocorrência.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    autocomplete: true
-                },
-                {
-                    name: "artigos",
-                    description: "Informe os artigos que se enquadram da ocorrência. (Art. X, Art. X, Art.X...)",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "descricao",
-                    description: "Informe o ocorrido de forma clara.",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "acusado",
-                    description: "Informe o acusado da ocorrência. (Fulano de Tal | 0000)",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
-                },
-                {
-                    name: "foto",
-                    description: "Envie uma foto do ponto fixo da ocorrência.",
-                    type: ApplicationCommandOptionType.Attachment,
-                    required: true
-                },
-                {
-                    name: "vitima",
-                    description: "Informe a vítima da ocorrência. (Fulano de Tal | 0000)",
-                    type: ApplicationCommandOptionType.String,
-                    required: false
-                },
-                {
-                    name: "outro",
-                    description: "Informe os transeuntes da ocorrência. (Fulano de Tal | 0000)",
-                    type: ApplicationCommandOptionType.String,
-                    required: false
-                }
-            ]
+            name: "militares",
+            description: "Mencione os militares participantes.",
+            type: ApplicationCommandOptionType.String,
+            required: true
+        },
+        {
+            name: "origem",
+            description: "Selecione a origem da ocorrência.",
+            type: ApplicationCommandOptionType.String,
+            required: true,
+            autocomplete: true
+        },
+        {
+            name: "endereco",
+            description: "Informe o endereço da ocorrência.",
+            type: ApplicationCommandOptionType.String,
+            required: true
+        },
+        {
+            name: "resultado",
+            description: "Selecione o resultado da ocorrência.",
+            type: ApplicationCommandOptionType.String,
+            required: true,
+            autocomplete: true
+        },
+        {
+            name: "artigos",
+            description: "Informe os artigos do ocorrido.",
+            type: ApplicationCommandOptionType.String,
+            required: true
+        },
+        {
+            name: "descricao",
+            description: "Descreva o ocorrido.",
+            type: ApplicationCommandOptionType.String,
+            required: true
+        },
+        {
+            name: "acusado",
+            description: "Informe o acusado.",
+            type: ApplicationCommandOptionType.String,
+            required: true
+        },
+        {
+            name: "foto",
+            description: "Envie uma foto do ponto fixo.",
+            type: ApplicationCommandOptionType.Attachment,
+            required: true
+        },
+        {
+            name: "vitima",
+            description: "Informe a vítima.",
+            type: ApplicationCommandOptionType.String,
+            required: false
+        },
+        {
+            name: "outro",
+            description: "Informe transeuntes.",
+            type: ApplicationCommandOptionType.String,
+            required: false
         }
     ],
 
-    async run(interaction) {
-        if (interaction.options.getSubcommand() !== "bopm") return;
-
+    async run(interaction: ChatInputCommandInteraction<"cached">) {
         const militares = interaction.options.getString("militares")!;
         const origem = interaction.options.getString("origem")!;
         const endereco = interaction.options.getString("endereco")!;
@@ -103,12 +90,12 @@ createCommand({
         let nbopm = parseInt(constantsData.bopm.bopmatual);
         nbopm++;
         constantsData.bopm.bopmatual = String(nbopm);
-        await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+        await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4));
 
         const bopmChannel = await interaction.guild.channels.fetch(constants.channels.bopmChannelId);
         if (!bopmChannel?.isTextBased()) return;
 
-        let messagemd = await fs.readFile('src/discord/messages/bopm.base.md', 'utf-8');
+        let messagemd = await fs.readFile("src/discord/messages/bopm.base.md", "utf-8");
 
         messagemd = messagemd
             .replace(/\$\{nbopm\}/g, String(nbopm))
@@ -129,7 +116,7 @@ createCommand({
         let descricaoParaTopico: string | null = null;
 
         if (mensagemComDescricao.length > 2000) {
-            mainMessageContent = messagemd.replace(/\$\{descricao\}/g, "Adicionada ao tópico anexado a este.");
+            mainMessageContent = messagemd.replace(/\$\{descricao\}/g, "Adicionada ao tópico anexado.");
             descricaoParaTopico = descricao;
         }
 
@@ -142,7 +129,7 @@ createCommand({
             const messageThread = await mainMessage.startThread({
                 name: `BO nº ${nbopm}`,
                 autoArchiveDuration: 1440,
-                reason: `BO nº ${nbopm} tem sua descrição mais que o esperado.`
+                reason: `Descrição extensa.`
             });
 
             await messageThread.send({
@@ -154,12 +141,12 @@ createCommand({
         }
 
         await interaction.reply({
-            flags: ["Ephemeral"],
+            ephemeral: true,
             content: `${icon.action_check} Boletim registrado com sucesso.`
         });
     },
 
-    async autocomplete(interaction) {
+    async autocomplete(interaction: AutocompleteInteraction<"cached">) {
         const focused = interaction.options.getFocused(true);
 
         if (focused.name === "origem") {
@@ -174,7 +161,9 @@ createCommand({
             return interaction.respond(
                 sugestões.map(s => ({ name: s, value: s }))
             );
-        } else if (focused.name === "resultado") {
+        }
+
+        if (focused.name === "resultado") {
             const sugestões = [
                 "Apresentação na Delegacia",
                 "Internação no Hospital",
@@ -188,4 +177,4 @@ createCommand({
             );
         }
     }
-});
+};

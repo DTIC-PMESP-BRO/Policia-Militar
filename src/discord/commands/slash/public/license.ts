@@ -56,7 +56,6 @@ createCommand({
         const solicitacoesdpChannel = await interaction.guild.channels.fetch(constants.channels.solicitacoesdpChannelId);
         if (!solicitacoesdpChannel?.isTextBased()) return;
 
-        // Função para converter texto em dias
         function parseTempoToDays(input: string | null): number | null {
             if (!input) return null;
 
@@ -74,7 +73,6 @@ createCommand({
             return null;
         }
 
-        // Validações dinâmicas:
         if (acao === "Solicitar licença" && motivo === "Não há") {
             await interaction.reply({
                 flags: ["Ephemeral"],
@@ -91,7 +89,6 @@ createCommand({
             return;
         }
 
-        // ---------------- VALIDAÇÃO DO TEMPO ----------------
         let dias = null;
 
         if (acao === "Solicitar licença") {
@@ -121,7 +118,6 @@ createCommand({
                 return;
             }
         }
-        // ------------------------------------------------------
 
         if (acao === "Solicitar licença") {
             const docRef = db.collection("licenses").doc(interaction.member.id);
@@ -194,7 +190,6 @@ createCommand({
         }
     },
 
-    // Autocomplete do campo "acao"
     async autocomplete(interaction) {
         const focused = interaction.options.getFocused(true);
 

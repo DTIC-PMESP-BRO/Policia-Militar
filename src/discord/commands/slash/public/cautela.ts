@@ -192,8 +192,9 @@ createCommand({
         } else if (focused.name === "motivo") {
             const sugestões = [
                 "Patrulhamento",
-                "Supervisão de área",
                 "Supervisão regional",
+                "Supervisão de área",
+                "Supervisão de subárea",
                 "Serviço administrativo",
                 "Transporte de pessoal"
             ].filter(s => s.toLowerCase().includes(focused.value.toLowerCase()));
