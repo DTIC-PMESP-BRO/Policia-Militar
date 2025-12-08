@@ -1,107 +1,145 @@
-import { promises as fs } from "fs";
+import { db } from "../../../database/firestore.js";
 
 export async function ouvidoriaCorregNumber() {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("ouvidoria");
+    const doc = await docRef.get();
 
-    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriacorregnumber) {
-        constantsData.ouvidoriapmesp.ouvidoriacorregnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return;
     }
 
-    let ouvidoriacorregnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriacorregnumber);
+    const data = doc.data();
 
-    ouvidoriacorregnumber++;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return;
+    }
 
-    constantsData.ouvidoriapmesp.ouvidoriacorregnumber = String(ouvidoriacorregnumber);
+    const ouvidoriacorregnumber = Number(data.ouvidoriacorregnumber) + 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+    await docRef.update({
+        "ouvidoriacorregnumber": String(ouvidoriacorregnumber)
+    })
 
     return ouvidoriacorregnumber;
 }
 
 export async function ouvidoriaCorregNumberMinus() {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("ouvidoria");
+    const doc = await docRef.get();
 
-    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriacorregnumber) {
-        constantsData.ouvidoriapmesp.ouvidoriacorregnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return;
     }
 
-    let ouvidoriacorregnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriacorregnumber);
+    const data = doc.data();
 
-    ouvidoriacorregnumber--;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return;
+    }
 
-    constantsData.ouvidoriapmesp.ouvidoriacorregnumber = String(ouvidoriacorregnumber);
+    const ouvidoriacorregnumber = Number(data.ouvidoriacorregnumber) - 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+    await docRef.update({
+        "ouvidoriacorregnumber": String(ouvidoriacorregnumber)
+    })
 }
 
 export async function ouvidoriaDPNumber() {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("ouvidoria");
+    const doc = await docRef.get();
 
-    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriadpnumber) {
-        constantsData.ouvidoriapmesp.ouvidoriadpnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return;
     }
 
-    let ouvidoriadpnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriadpnumber);
+    const data = doc.data();
 
-    ouvidoriadpnumber++;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return;
+    }
 
-    constantsData.ouvidoriapmesp.ouvidoriadpnumber = String(ouvidoriadpnumber);
+    const ouvidoriadpnumber = Number(data.ouvidoriadpnumber) + 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+    await docRef.update({
+        "ouvidoriadpnumber": String(ouvidoriadpnumber)
+    })
 
     return ouvidoriadpnumber;
 }
 
 export async function ouvidoriaDPNumberMinus() {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("ouvidoria");
+    const doc = await docRef.get();
 
-    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriadpnumber) {
-        constantsData.ouvidoriapmesp.ouvidoriadpnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return;
     }
 
-    let ouvidoriadpnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriadpnumber);
+    const data = doc.data();
 
-    ouvidoriadpnumber--;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return;
+    }
 
-    constantsData.ouvidoriapmesp.ouvidoriadpnumber = String(ouvidoriadpnumber);
+    const ouvidoriadpnumber = Number(data.ouvidoriadpnumber) - 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
-
-    return ouvidoriadpnumber;
+    await docRef.update({
+        "ouvidoriadpnumber": String(ouvidoriadpnumber)
+    })
 }
 
 export async function ouvidoriaEMNumber() {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("ouvidoria");
+    const doc = await docRef.get();
 
-    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriaemnumber) {
-        constantsData.ouvidoriapmesp.ouvidoriaemnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return;
     }
 
-    let ouvidoriaemnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriaemnumber);
+    const data = doc.data();
 
-    ouvidoriaemnumber++;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return;
+    }
 
-    constantsData.ouvidoriapmesp.ouvidoriaemnumber = String(ouvidoriaemnumber);
+    const ouvidoriaemnumber = Number(data.ouvidoriaemnumber) + 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+    await docRef.update({
+        "ouvidoriaemnumber": String(ouvidoriaemnumber)
+    })
 
     return ouvidoriaemnumber;
 }
 
 export async function ouvidoriaEMNumberMinus() {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("ouvidoria");
+    const doc = await docRef.get();
 
-    if (!constantsData.ouvidoriapmesp || !constantsData.ouvidoriapmesp.ouvidoriaemnumber) {
-        constantsData.ouvidoriapmesp.ouvidoriaemnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return;
     }
 
-    let ouvidoriaemnumber = parseInt(constantsData.ouvidoriapmesp.ouvidoriaemnumber);
+    const data = doc.data();
 
-    ouvidoriaemnumber--;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return;
+    }
 
-    constantsData.ouvidoriapmesp.ouvidoriaemnumber = String(ouvidoriaemnumber);
+    const ouvidoriaemnumber = Number(data.ouvidoriaemnumber) - 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
-
-    return ouvidoriaemnumber;
+    await docRef.update({
+        "ouvidoriaemnumber": String(ouvidoriaemnumber)
+    })
 }

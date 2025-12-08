@@ -57,12 +57,12 @@ const prefixoInfo: Record<string, { modelo: string; opm: string; call: string }>
         call: "1136387344275099719"
     },
     "M-22107": {
-        modelo: "Spin 2023",
+        modelo: "Trailblazer 2023",
         opm: "22º BPM/M - 1ª Cia",
         call: "1299827039922294848"
     },
     "M-22108": {
-        modelo: "Spin 2023",
+        modelo: "Corola Cross 2023",
         opm: "22º BPM/M - 1ª Cia",
         call: "1226616811471110174"
     },
@@ -163,7 +163,7 @@ createCommand({
             call: "Não informado"
         };
 
-        const cautelaChannel = await interaction.guild.channels.fetch(constants.channels.cautelaChannelId);
+        const cautelaChannel = await interaction.guild.channels.fetch(dbchannels.channels_ids.cautelaChannelId);
         if (!cautelaChannel?.isTextBased()) return;
 
         await cautelaChannel.send({
@@ -192,8 +192,9 @@ createCommand({
         } else if (focused.name === "motivo") {
             const sugestões = [
                 "Patrulhamento",
-                "Supervisão de área",
                 "Supervisão regional",
+                "Supervisão de área",
+                "Supervisão de subárea",
                 "Serviço administrativo",
                 "Transporte de pessoal"
             ].filter(s => s.toLowerCase().includes(focused.value.toLowerCase()));

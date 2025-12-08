@@ -26,7 +26,7 @@ export function cautelaCreateContainer(member: GuildMember, militares: string, o
             new ActionRowBuilder({
                 components: [
                     new ButtonBuilder({
-                        customId: `cautela/close/${prefixo}`,
+                        customId: `cautela/close/${member.id}`,
                         emoji: icon.action_remove,
                         label: "Fechar Cautelamento",
                         style: ButtonStyle.Danger,

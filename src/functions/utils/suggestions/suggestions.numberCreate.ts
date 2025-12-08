@@ -1,19 +1,26 @@
-import { promises as fs } from "fs";
+import { db } from "../../../database/firestore.js";
 
 export async function suggestionsNumber(): Promise<string> {
-    const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+    const docRef = db.collection("contagens").doc("sugestoes");
+    const doc = await docRef.get();
 
-    if (!constantsData.suggestions || !constantsData.suggestions.suggestionsnumber) {
-        constantsData.suggestions.suggestionsnumber = "0";
+    if (!doc.exists) {
+        console.log('Houve um erro ao acessar o documento "ouvidoria", entre em contato com a DTIC.')
+        return "";
     }
 
-    let suggestionsnumber = parseInt(constantsData.suggestions.suggestionsnumber);
+    const data = doc.data();
 
-    suggestionsnumber++;
+    if (!data) {
+        console.log('O documento "ouvidoria" está vazio, entre em contato com a DTIC.')
+        return "";
+    }
 
-    constantsData.suggestions.suggestionsnumber = String(suggestionsnumber);
+    const suggestionsnumber = Number(data.suggestionsnumber) + 1;
 
-    await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+    await docRef.update({
+        "suggestionsnumber": String(suggestionsnumber)
+    })
 
     return String(suggestionsnumber);
 }
