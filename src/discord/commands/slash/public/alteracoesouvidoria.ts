@@ -1,6 +1,7 @@
 import { createCommand } from "#base";
 import { ApplicationCommandOptionType, ApplicationCommandType } from "discord.js";
 import { promises as fs } from "fs";
+import { db } from "../../../../database/firestore.js";
 import { icon } from "../../../../functions/utils/emojis.js";
 
 createCommand({
@@ -42,16 +43,32 @@ createCommand({
         const ticket = interaction.options.getString("ticket")!;
         const alteracao = interaction.options.getString("alteracao")!;
 
-        const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+        const docRef = db.collection("contagens").doc("diretoriadepessoal");
+        const doc = await docRef.get();
 
-        if (!constantsData.ouvidoriaDp || !constantsData.ouvidoriaDp.alteracaoatual) {
-            constantsData.ouvidoriaDp = { alteracaoatual: "1" };
+        if (!doc.exists) {
+            await interaction.reply({
+                flags: ["Ephemeral"],
+                content: `${icon.action_x} Houve um erro ao acessar o documento "diretoriadepessoal", entre em contato com a DTIC.`
+            })
+            return;
         }
 
-        let alteracaoNumero = parseInt(constantsData.ouvidoriaDp.alteracaoatual);
-        alteracaoNumero++;
-        constantsData.bopm.bopmatual = String(alteracaoNumero);
-        await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4), "utf-8");
+        const data = doc.data();
+
+        if (!data) {
+            await interaction.reply({
+                flags: ["Ephemeral"],
+                content: `${icon.action_x} O documento "diretoriadepessoal" está vazio, entre em contato com a DTIC.`
+            })
+            return;
+        }
+
+        const alteracaoatual = Number(data.alteracaoatual) + 1;
+
+        await docRef.update({
+            "alteracaoatual": String(alteracaoatual)
+        })
 
         const alteracoesouvidoriaChannel = await interaction.guild.channels.fetch(constants.channels.alteracoesouvidoriaChannelId);
         if (!alteracoesouvidoriaChannel?.isTextBased()) return;
@@ -59,7 +76,7 @@ createCommand({
         let messagemd = await fs.readFile('src/discord/messages/alteracoesouvidoria.base.md', 'utf-8');
 
         messagemd = messagemd
-            .replace(/\$\{numero\}/g, String(alteracaoNumero))
+            .replace(/\$\{numero\}/g, String(alteracaoatual))
             .replace(/\$\{numeroticket\}/g, ticket)
             .replace(/\$\{alteracao\}/g, alteracao)
             .replace(/\$\{responsavel\}/g, responsavel)

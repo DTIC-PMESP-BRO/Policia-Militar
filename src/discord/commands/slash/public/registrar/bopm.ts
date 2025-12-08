@@ -1,6 +1,7 @@
 import { brBuilder } from "@magicyan/discord";
 import { ApplicationCommandOptionType, AutocompleteInteraction, ChatInputCommandInteraction, time, TimestampStyles } from "discord.js";
 import { promises as fs } from "fs";
+import { db } from "../../../../../database/firestore.js";
 import { icon } from "../../../../../functions/utils/emojis.js";
 
 export default {
@@ -81,16 +82,32 @@ export default {
         const vitima = interaction.options.getString("vitima") ?? "Não Há";
         const outro = interaction.options.getString("outro") ?? "Não Há";
 
-        const constantsData = JSON.parse(await fs.readFile("constants.json", "utf-8"));
+        const docRef = db.collection("contagens").doc("bopm");
+        const doc = await docRef.get();
 
-        if (!constantsData.bopm || !constantsData.bopm.bopmatual) {
-            constantsData.bopm = { bopmatual: "1" };
+        if (!doc.exists) {
+            await interaction.reply({
+                flags: ["Ephemeral"],
+                content: `${icon.action_x} Houve um erro ao acessar o documento "bopm", entre em contato com a DTIC.`
+            })
+            return;
         }
 
-        let nbopm = parseInt(constantsData.bopm.bopmatual);
-        nbopm++;
-        constantsData.bopm.bopmatual = String(nbopm);
-        await fs.writeFile("constants.json", JSON.stringify(constantsData, null, 4));
+        const data = doc.data();
+
+        if (!data) {
+            await interaction.reply({
+                flags: ["Ephemeral"],
+                content: `${icon.action_x} O documento "bopm" está vazio, entre em contato com a DTIC.`
+            })
+            return;
+        }
+
+        const nbopm = Number(data.bopmatual) + 1;
+
+        await docRef.update({
+            "bopmatual": String(nbopm)
+        })
 
         const bopmChannel = await interaction.guild.channels.fetch(constants.channels.bopmChannelId);
         if (!bopmChannel?.isTextBased()) return;
