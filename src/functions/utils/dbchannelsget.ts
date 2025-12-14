@@ -12,6 +12,7 @@ export interface ChannelsSchema {
     suggestionsChannelId: string;
     ouvidoriaChannelId: string;
     cautelaChannelId: string;
+    avaliacaoChannelId: string;
   };
 }
 
