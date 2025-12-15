@@ -1,6 +1,7 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
 import { icon } from "../../../functions/utils/emojis.js";
+import { ouvidoriaArquiveLog } from "../../../functions/utils/ouvidorialogs.js";
 import { ouvidoriaThreadArquivedContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.thread.arquived.js";
 
 createResponder({
@@ -44,6 +45,8 @@ createResponder({
             flags: ["IsComponentsV2"],
             components: [ouvidoriaThreadArquivedContainer(solicitante, interaction.user, data.ouvidoriaEmoji)]
         });
+
+        await ouvidoriaArquiveLog(interaction.member, `${ouvidoriaResponsavelNumber[0]}-${ouvidoriaResponsavelNumber.slice(1)}`);
 
         await docRef.delete()
 
