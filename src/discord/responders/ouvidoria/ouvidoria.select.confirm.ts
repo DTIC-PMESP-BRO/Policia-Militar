@@ -4,6 +4,7 @@ import { db } from "../../../database/firestore.js";
 import { icon } from "../../../functions/utils/emojis.js";
 import { ouvidoriaSelectThreadInitContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.select.threadInit.js";
 import { ouvidoriaThreadInitContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.thread.init.js";
+import { ouvidoriaOpenLog } from "../../../functions/utils/ouvidorialogs.js";
 
 createResponder({
     customId: "/ouvidoria/:ouvidoriaResponsavelNumber/select/confirm",
@@ -46,6 +47,8 @@ createResponder({
                 type: ChannelType.PrivateThread,
                 reason: `Atendimento Ao Militar | ${interaction.user.username} | ${data.ouvidoriaResponsavel}`,
             });
+
+            await ouvidoriaOpenLog(interaction.member, `${ouvidoriaResponsavelNumber[0]}-${ouvidoriaResponsavelNumber.slice(1)}`);
 
             await interaction.update({
                 components: [ouvidoriaSelectThreadInitContainer(interaction.member, data.ouvidoriaEmoji, interaction.guild, ticketthread)]

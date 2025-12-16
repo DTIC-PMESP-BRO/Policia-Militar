@@ -1,6 +1,7 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
 import { icon } from "../../../functions/utils/emojis.js";
+import { ouvidoriaLockLog } from "../../../functions/utils/ouvidorialogs.js";
 import { ouvidoriaThreadLockContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.thead.lock.js";
 
 createResponder({
@@ -56,6 +57,7 @@ createResponder({
             if (!guildMember.roles.cache.has(data.ouvidoriaRoleId)) {
                 try {
                     await thread.members.remove(memberId);
+                    await ouvidoriaLockLog(interaction.member, `${ouvidoriaResponsavelNumber[0]}-${ouvidoriaResponsavelNumber.slice(1)}`);
                 } catch (error) {
                     await thread.send({
                         content: `${icon.action_x} Erro ao remover ${guildMember.user.username}.`

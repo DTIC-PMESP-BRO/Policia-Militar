@@ -1,6 +1,7 @@
 import { createResponder, ResponderType } from "#base";
 import { db } from "../../../database/firestore.js";
 import { icon } from "../../../functions/utils/emojis.js";
+import { ouvidoriaAddMemberLog } from "../../../functions/utils/ouvidorialogs.js";
 import { ouvidoriaThreadInitContainer } from "../../containers/commands/slash/private/ouvidoria/ouvidoria.thread.init.js";
 
 createResponder({
@@ -32,7 +33,7 @@ createResponder({
 
         if (!solicitante) return;
 
-        const selectedId = interaction.values?.[0];
+        const selectedMember = await interaction.guild.members.fetch(interaction.values?.[0])
 
         await interaction.update({
             flags: ["IsComponentsV2"],
@@ -41,8 +42,10 @@ createResponder({
 
         if (!interaction.channel) return;
 
+        await ouvidoriaAddMemberLog(interaction.member, `${ouvidoriaResponsavelNumber[0]}-${ouvidoriaResponsavelNumber.slice(1)}`, selectedMember)
+
         await interaction.channel?.send({
-            content: `${icon.action_check} Membro <@${selectedId}> adicionado ao atendimento. Responsável: ${interaction.user}`
+            content: `${icon.action_check} Membro ${selectedMember} adicionado ao atendimento. Responsável: ${interaction.user}`
         })
     },
 });

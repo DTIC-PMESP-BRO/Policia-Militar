@@ -16,5 +16,12 @@
         "brilliance": "#f07d5f",
         "nitro": "#ff6bfa",
         "bravery": "#9c84ef"
+    },
+    "botinfo": {
+        "version": "1.4.1",
+        "base": "Constatic CLI by Rincko Dev",
+        "devs": "yurigabriel6, felipeflosi...",
+        "description": "👋 Olá! 🤖 Sou o robô do servidor da Polícia Militar do Brasil Roleplay Oficial, estou aqui para auxiliar os policiais e deixar mais fácil os trabalhos cotidianos.",
+        "easteregg": "Olha cara, qual intuito em procurar essas coisas? HAHAHAHAHAHAHAHA"
     }
 }

@@ -1,20 +1,9 @@
-import { createCommand } from "#base";
-import { ApplicationCommandOptionType, ApplicationCommandType, AttachmentBuilder } from "discord.js";
-import { icon } from "../../../../functions/utils/emojis.js";
-import { ouvidoriaSendContainer } from "../../../containers/commands/slash/private/ouvidoria/ouvidoria.send.js";
+import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js";
+import { icon } from "../../../../../functions/utils/emojis.js";
+import { ouvidoriaSendContainer } from "../../../../containers/commands/slash/private/ouvidoria/ouvidoria.send.js";
 
-createCommand({
-    name: "painel",
-    description: "Envia o Painel da Ouvidoria - Admin",
-    type: ApplicationCommandType.ChatInput,
-    options: [
-        {
-            name: "ouvidoria",
-            description: "Envia o Painel da Ouvidoria - Admin",
-            type: ApplicationCommandOptionType.Subcommand
-        }
-    ],
-    async run(interaction) {
+export default {
+    async run(interaction: ChatInputCommandInteraction<"cached">) {
         if (interaction.options.getSubcommand() !== "ouvidoria") return;
 
         const suporteChannel = await interaction.guild.channels.fetch(dbchannels.channels_ids.ouvidoriaChannelId);
@@ -45,4 +34,4 @@ createCommand({
             content: `${icon.action_check} Painel Enviado Com Sucesso.`
         })
     }
-});
+};
