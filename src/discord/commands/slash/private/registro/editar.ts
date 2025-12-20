@@ -9,7 +9,8 @@ export default {
             name: "rg",
             description: "Informe o Registro Geral do Militar.",
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
+            autocomplete: true
         },
         {
             name: "nome",
@@ -187,6 +188,26 @@ export default {
             return interaction.respond(
                 filtradas.map(s => ({ name: s, value: s }))
             );
+        } else if (focused.name === "rg") {
+            try {
+                const querySnapshot = await db.collection("militares").get();
+
+                const sugestões = querySnapshot.docs
+                    .map(doc => {
+                        const data = doc.data();
+                        return {
+                            name: `${data.nome} (${doc.id}) - ${data.patente}`,
+                            value: doc.id
+                        };
+                    })
+                    .filter(sug => sug.name.toLowerCase().includes(focused.value.toLowerCase()))
+                    .slice(0, 25);
+
+                await interaction.respond(sugestões);
+            } catch (err) {
+                console.error("Erro no autocomplete:", err);
+                await interaction.respond([]);
+            }
         }
     }
 };

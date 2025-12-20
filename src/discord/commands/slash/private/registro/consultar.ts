@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
 import { db } from "../../../../../database/firestore.js";
 import { icon } from "../../../../../functions/utils/emojis.js";
 import { registroConsultarContainer } from "../../../../containers/commands/slash/private/registro/registro.consultar.js";
@@ -9,7 +9,8 @@ export default {
             name: "rg",
             description: "Informe o Registro Geral do Militar.",
             type: ApplicationCommandOptionType.String,
-            required: true
+            required: true,
+            autocomplete: true
         }
     ],
 
@@ -43,5 +44,31 @@ export default {
             flags: ["Ephemeral", "IsComponentsV2"],
             components: [registroConsultarContainer(militar, data.nome, data.patente, data.rg, data.opm, data.status)]
         })
+    },
+
+    async autocomplete(interaction: AutocompleteInteraction<"cached">) {
+        const focused = interaction.options.getFocused(true);
+
+        if (focused.name === "rg") {
+            try {
+                const querySnapshot = await db.collection("militares").get();
+
+                const sugestões = querySnapshot.docs
+                    .map(doc => {
+                        const data = doc.data();
+                        return {
+                            name: `${data.nome} (${doc.id}) - ${data.patente}`,
+                            value: doc.id
+                        };
+                    })
+                    .filter(sug => sug.name.toLowerCase().includes(focused.value.toLowerCase()))
+                    .slice(0, 25);
+
+                await interaction.respond(sugestões);
+            } catch (err) {
+                console.error("Erro no autocomplete:", err);
+                await interaction.respond([]);
+            }
+        }
     }
 };
