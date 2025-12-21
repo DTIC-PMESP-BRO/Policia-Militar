@@ -42,7 +42,7 @@ export default {
 
         await interaction.reply({
             flags: ["Ephemeral", "IsComponentsV2"],
-            components: [registroConsultarContainer(militar, data.nome, data.patente, data.rg, data.opm, data.status)]
+            components: [registroConsultarContainer(militar, data.nome, data.patente, data.rg, data.opm, data.status, data.bopm, data.talao)]
         })
     },
 
